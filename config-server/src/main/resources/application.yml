@@ -1,0 +1,31 @@
+server:
+  port: 8000
+
+spring:
+  profiles:
+    active: jdbc
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/configserver?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+    username: root
+    password: root
+    driver-class-name: org.mariadb.jdbc.Driver
+    hikari:
+      connection-timeout: 5000
+      maximum-pool-size: 10
+
+  cloud:
+    config:
+      server:
+        jdbc:
+          sql: SELECT PROPERTY_NAME, PROPERTY_VALUE from PROPERTIES where APPLICATION=? and PROFILE=? and LABEL=?
+
+management:
+  server:
+    servlet:
+      context-path: /admin
+
+logging:
+  level:
+    org.springframework.cloud: debug
+    com.bory.tutorial.oauth2.configserver: debug
